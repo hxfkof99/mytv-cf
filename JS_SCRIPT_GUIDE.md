@@ -519,7 +519,7 @@ return { url: u + '&socks5h=' + ip };                        // 同上，等价
 #### 完整示例：一个 socks5 中转脚本
 
 ```javascript
-// 源地址：js://http://192.168.5.110/proxy.js?ip=192.168.5.5:1081&u=https://cdn.example.com/live.m3u8
+// 源地址：js://http://192.168.5.100/proxy.js?ip=192.168.5.5:1088&u=https://cdn.example.com/live.m3u8
 function main(item) {
     const ip = ku9.getQuery(item.url, 'ip');
     const u = ku9.getQuery(item.url, 'u');
@@ -535,7 +535,6 @@ function main(item) {
 #### 注意事项
 
 - 只影响这条 `js://` 线路的播放，普通线路与全局代理行为零变化。
-- 本机回环（本地动态路由 `127.0.0.1/js/play.m3u8`）**永远不走代理**，否则代理自己都连不上。
 - 代理对**清单和切片**都生效，不用自己改写 m3u8 里的地址。
 - SOCKS5 的**用户名密码 OkHttp 不支持**（`socks5://user:pass@ip:port` 里认证会被忽略）；要认证请用 HTTP 代理。
 - `socks5` 与 `socks5h` 在 mytv 里**行为等价**：域名一律交给代理端解析。
