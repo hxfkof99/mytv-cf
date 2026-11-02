@@ -160,10 +160,12 @@ globalThis.foo = 1;
 
 | 函数 | 签名 | 返回 |
 |---|---|---|
-| `mytv.get` | `get(url, headers?)` | 响应体字符串，失败返回 `""` |
-| `mytv.post` | `post(url, headers?, body?)` | 响应体字符串 |
-| `mytv.request` | `request(url, method?, headers?, body?, redirect?)` | `{ furl, code, headers, body }` |
-| `mytv.getHeaders` | `getHeaders(url, headers?, redirect?, method?, body?)` | 响应头的 **JSON 字符串** |
+| `mytv.get` | `get(url, headers?, proxy?)` | 响应体字符串，失败返回 `""` |
+| `mytv.post` | `post(url, headers?, body?, proxy?)` | 响应体字符串 |
+| `mytv.request` | `request(url, method?, headers?, body?, redirect?, proxy?)` | `{ furl, code, headers, body }` |
+| `mytv.getHeaders` | `getHeaders(url, headers?, redirect?, method?, body?, proxy?)` | 响应头的 **JSON 字符串** |
+
+`proxy` 是末位参数（可选），语法与播放地址的代理完全相同，见 [4.4 代理](#44-代理socks5--http)。
 
 ```javascript
 // 最常用：拿正文
@@ -190,6 +192,7 @@ const h = JSON.parse(head);         // { "Content-Type": "...", "Server": "..." 
 
 - `headers` 传 `null` 或 `{}` 都行；返回的是**完整响应体字符串**，不做 JSON 解析，需要自己 `JSON.parse`。
 - 请求失败（DNS / 超时 / TLS）**不抛异常**，`get`/`post` 返回空串，`request` 返回 `code = 0`。
+- 想让这条请求走代理，把代理串作为**末位参数**传即可：`mytv.get(url, headers, 'socks5://1.2.3.4:1080')`。中间参数不能省，要传 `''` / `{}` 占位（宿主按位置取值）。详见 [4.4 代理](#44-代理socks5--http)。
 
 ### 3.2 缓存
 
@@ -463,9 +466,120 @@ return { status: 503, headers: { 'Retry-After': '5' } };
 
 // ⑥ 直接报错：返回 error 时 App 按错误处理并提示
 return { error: 'token 已过期' };
+
+// ⑦ 走代理（清单与切片都走，详见 4.4）
+return { url, proxy: 'socks5://192.168.5.110:1081' };
 ```
 
 脚本返回的 `headers` 会被合并进线路请求头，并在每次 HLS 刷新 manifest 时自动重套最新值 —— 所以**签名类 header 每次现算就行**，不用自己缓存。
+
+### 4.4 代理（socks5 / HTTP）
+
+播放地址可以走脚本指定的代理。**只对 `js://` 脚本线路生效**，与 App 设置里的全局代理互不影响（全局代理没开也能用；脚本没指定时代理回落到全局设置）。
+
+#### 推荐写法：返回对象的 `proxy` 字段
+
+```javascript
+// ① 字符串：socks5 / http / https 都行，可带用户名密码，可省略 scheme
+return { url: u, proxy: 'socks5://192.168.5.110:1081', headers: { 'User-Agent': 'okhttp/5.1.6' } };
+return { url: u, proxy: 'http://user:pass@192.168.5.110:8080', headers: { 'User-Agent': 'okhttp/5.1.6' } };
+return { url: u, proxy: '192.168.5.110:1081', headers: { 'User-Agent': 'okhttp/5.1.6' } };   // 无 scheme = socks5
+
+// ② 单键对象：键名决定类型，值里可以不写 scheme
+return { url: u, proxy: { socks5: '192.168.5.110:1081' }, headers: { 'User-Agent': 'okhttp/5.1.6' } };
+return { url: u, proxy: { http: 'user:pass@192.168.5.110:8080' }, headers: { 'User-Agent': 'okhttp/5.1.6' } };
+```
+
+`url` 保持干净，不要自己往里拼代理参数。
+
+| 写法 | 类型判定 |
+|---|---|
+| `'socks5://ip:port'` | SOCKS5（`socks5h://` 等价，OkHttp 只支持 SOCKS5，别用 socks4） |
+| `'http://[user:pass@]ip:port'` / `'https://…'` | HTTP（https 目标走 CONNECT 隧道，不用换类型） |
+| `'ip:port'`（无 scheme） | SOCKS5 |
+| `{ socks5: '…' }` `{ socks5h: '…' }` `{ socks: '…' }` | SOCKS5，值缺 scheme 自动补 |
+| `{ http: '…' }` `{ https: '…' }` | HTTP，值缺 scheme 自动补 |
+
+#### 兼容写法：把标记拼在地址上（Ku9 脚本常见）
+
+```javascript
+return u + '&socks5=' + ip;                                  // 最常见的 Ku9 写法
+return { url: u + '&proxy=' + 'socks5://' + ip + ':1080' };  // 统一标记
+return { url: u + '&socks5h=' + ip };                        // 同上，等价
+```
+
+- 三个标记键都认：`proxy` / `socks5` / `socks5h`。
+- 地址**有没有 `?` 都能拼**：`https://host/a.m3u8?fmt=ts2hls&socks5=1.2.3.4:1080` 与 `https://host/a.mpd&socks5=1.2.3.4:1080` 都行。
+- App 会把标记**从地址里剥掉**再请求，CDN 不会看到 `socks5=` 这种东西。
+
+#### 优先级
+
+`proxy` 字段 **>** 地址上的标记 **>** 全局代理设置。两种都没给 → 与改造前完全一致。代理串写错（host / port 非法）等于没给，不报错。
+
+#### 完整示例：一个 socks5 中转脚本
+
+```javascript
+// 源地址：js://http://192.168.5.110/proxy.js?ip=192.168.5.5:1081&u=https://cdn.example.com/live.m3u8
+function main(item) {
+    const ip = ku9.getQuery(item.url, 'ip');
+    const u = ku9.getQuery(item.url, 'u');
+    if (!ip || !u) return { error: '缺少 ip 或 u 参数' };
+    return {
+        url: u,
+        proxy: { socks5: ip },
+        headers: { 'User-Agent': 'okhttp/5.1.6' },
+    };
+}
+```
+
+#### 注意事项
+
+- 只影响这条 `js://` 线路的播放，普通线路与全局代理行为零变化。
+- 本机回环（本地动态路由 `127.0.0.1/js/play.m3u8`）**永远不走代理**，否则代理自己都连不上。
+- 代理对**清单和切片**都生效，不用自己改写 m3u8 里的地址。
+- SOCKS5 的**用户名密码 OkHttp 不支持**（`socks5://user:pass@ip:port` 里认证会被忽略）；要认证请用 HTTP 代理。
+- `socks5` 与 `socks5h` 在 mytv 里**行为等价**：域名一律交给代理端解析。
+
+#### 脚本里的 `get` / `post` 也能走代理
+
+宿主网络函数的末位参数就是代理串，语法与上面播放代理完全一致：
+
+```javascript
+const proxy = 'socks5://192.168.5.110:1081';
+
+// GET 走代理
+const body = mytv.get('https://api.example.com/list', { 'User-Agent': 'okhttp/5.1.6' }, proxy);
+
+// POST 走带认证的 HTTP 代理（第 4 参才是代理）
+const ret = mytv.post('https://api.example.com/login',
+    { 'Content-Type': 'application/x-www-form-urlencoded' },
+    'user=abc&pass=123',
+    'http://user:pass@192.168.5.110:8080');
+
+// request：第 5 参是 redirect，第 6 参才是代理
+const res = mytv.request('https://api.example.com/a', 'GET', {}, '', true, proxy);
+if (res.code === 200) console.log(res.body);
+
+// getHeaders 同样是第 6 参
+const h = JSON.parse(mytv.getHeaders('https://cdn.example.com/a.m3u8', {}, true, 'GET', '', proxy));
+```
+
+- 参数**按位置取值**，代理在末位 → 前面的可选参数不能跳，要用 `''` / `{}` 占位。
+- 同一个代理串会被缓存复用（不会每个请求都新建连接池）；传 `null` 或不传 = 用全局设置，与老脚本一致。
+- 拿 token 和播放都走同一个代理的完整例子：
+
+```javascript
+function main(item) {
+    const proxy = 'socks5://' + ku9.getQuery(item.url, 'ip');
+    const api = mytv.get('https://api.example.com/token', { 'User-Agent': 'okhttp/5.1.6' }, proxy);
+    const token = JSON.parse(api).token;
+    return {
+        url: 'https://cdn.example.com/live.m3u8?token=' + token,
+        proxy: proxy,
+        headers: { 'User-Agent': 'okhttp/5.1.6' },
+    };
+}
+```
 
 ---
 
