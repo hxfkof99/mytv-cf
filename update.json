@@ -1,0 +1,36 @@
+{
+  "editions": [
+    {
+      "id": "basic",
+      "name": "基础版",
+      "version": "1.5.4",
+      "description": "### 基础版 v1.5.4\n- 修复若干直播源解析问题\n- 优化频道切换流畅度\n**建议所有用户更新**",
+      "downloadUrlArm64": "https://github.com/你的用户名/mytv-android/releases/download/v1.5.4/mytv-android-tv-1.5.4-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://github.com/你的用户名/mytv-android/releases/download/v1.5.4/mytv-android-tv-1.5.4-armeabi-v7a-sdk23-original.apk"
+    },
+    {
+      "id": "library",
+      "name": "媒体库版",
+      "version": "2.5.4",
+      "description": "### 媒体库版 v2.5.4\n- 新增 WebDAV/SMB 刮削\n- 修复库版本 OOM",
+      "downloadUrlArm64": "https://github.com/你的用户名/mytv-android/releases/download/v2.5.4/mytv-android-tv-2.5.4-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://github.com/你的用户名/mytv-android/releases/download/v2.5.4/mytv-android-tv-2.5.4-armeabi-v7a-sdk23-original.apk"
+    },
+    {
+      "id": "asr",
+      "name": "语音识别版",
+      "version": "3.5.4",
+      "description": "### 语音识别版 v3.5.4\n- 优化离线 ASR 模型",
+      "downloadUrlArm64": "https://github.com/你的用户名/mytv-android/releases/download/v3.5.4/mytv-android-tv-3.5.4-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://github.com/你的用户名/mytv-android/releases/download/v3.5.4/mytv-android-tv-3.5.4-armeabi-v7a-sdk23-original.apk"
+    },
+    {
+      "id": "all",
+      "name": "全功能版",
+      "version": "5.5.4",
+      "description": "### 全功能版 v5.5.4\n- 集成媒体库 + 语音识别\n- 全量修复",
+      "downloadUrlArm64": "https://github.com/你的用户名/mytv-android/releases/download/v5.5.4/mytv-android-tv-5.5.4-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://github.com/你的用户名/mytv-android/releases/download/v5.5.4/mytv-android-tv-5.5.4-armeabi-v7a-sdk23-original.apk"
+    }
+  ]
+}
