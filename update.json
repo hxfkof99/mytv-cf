@@ -11,26 +11,26 @@
     {
       "id": "library",
       "name": "媒体库版",
-      "version": "2.1.5",
-      "description": "### 媒体库版 v2.1.5\n- 详见基础版 v1.5.4的更新说明",
-      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v2.1.5/mytv-android-tv-2.1.5-arm64-v8a-sdk23-original.apk",
-      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v2.1.5/mytv-android-tv-2.1.5-armeabi-v7a-sdk23-original.apk"
+      "version": "2.1.6",
+      "description": "### 媒体库版 v2.1.6\n- 详见基础版 v1.5.6的更新说明",
+      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v2.1.6/mytv-android-tv-2.1.6-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v2.1.6/mytv-android-tv-2.1.6-armeabi-v7a-sdk23-original.apk"
     },
     {
       "id": "asr",
       "name": "语音识别版",
-      "version": "3.1.5",
-      "description": "### 语音识别版 v3.1.5\n- 详见基础版 v1.5.4的更新说明",
-      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v3.1.5/mytv-android-tv-3.1.5-arm64-v8a-sdk23-original.apk",
-      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v3.1.5/mytv-android-tv-3.1.5-armeabi-v7a-sdk23-original.apk"
+      "version": "3.1.6",
+      "description": "### 语音识别版 v3.1.6\n- 详见基础版 v1.5.6的更新说明",
+      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v3.1.6/mytv-android-tv-3.1.6-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v3.1.6/mytv-android-tv-3.1.6-armeabi-v7a-sdk23-original.apk"
     },
     {
       "id": "all",
       "name": "全功能版",
-      "version": "5.1.5",
-      "description": "### 全功能版 v5.1.5\n- 详见基础版 v1.5.4的更新说明\n**建议所有用户更新**",
-      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v5.1.5/mytv-android-tv-5.1.5-arm64-v8a-sdk23-original.apk",
-      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v5.1.5/mytv-android-tv-5.1.5-armeabi-v7a-sdk23-original.apk"
+      "version": "5.1.6",
+      "description": "### 全功能版 v5.1.6\n- 详见基础版 v1.5.6的更新说明\n**建议所有用户更新**",
+      "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v5.1.6/mytv-android-tv-5.1.6-arm64-v8a-sdk23-original.apk",
+      "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v5.1.6/mytv-android-tv-5.1.6-armeabi-v7a-sdk23-original.apk"
     }
   ]
 }
