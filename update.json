@@ -4,7 +4,7 @@
       "id": "basic",
       "name": "基础版",
       "version": "1.5.6",
-      "description": "### 基础版 v1.5.6\n- 新增「信息面析卡片风格」在「 设置」-「界面」开启，默认关闭\n- 修复高优先级源失效时无节目信息\n- 修复多源节目单按时间空档补档\n**建议内置第一为51zmte1（有今天和明天节目单和描述），第二为erw（含多天节目单补51zmte1的时间空档），自有的最准最齐的epg源可以放在m3u中定义头优先匹配**",
+      "description": "### 基础版 v1.5.6\n- 新增「信息面板卡片风格」在「 设置」-「界面」开启，默认关闭\n- 修复高优先级源失效时无节目信息\n- 修复多源节目单按时间空档补档\n**建议内置第一为51zmte1（有今天和明天节目单和描述），第二为erw（含多天节目单补51zmte1的时间空档），自有的最准最齐的epg源可以放在m3u中定义头优先匹配**",
       "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v1.5.6/mytv-android-tv-1.5.6-arm64-v8a-sdk23-original.apk",
       "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v1.5.6/mytv-android-tv-1.5.6-armeabi-v7a-sdk23-original.apk"
     },
