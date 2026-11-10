@@ -4,7 +4,7 @@
       "id": "basic",
       "name": "基础版",
       "version": "1.5.4",
-      "description": "### 基础版 v1.5.4\n- 修复UI的一致性\n- 新增「深色主题」「浅色主题」两套，更新原有12套主题\n- 新增「焦点样式」「EPG 文字跟随强调色」\n- 新增「自动更新」\n- 修复记忆功能\n- 修复经典界面分组列表右角标显示遮挡\n**建议所有用户更新**",
+      "description": "### 基础版 v1.5.4\n- 修复UI的一致性\n- 新增「深色主题」「浅色主题」两套，更新原有12套主题\n- 新增「焦点样式」「EPG 文字跟随强调色」\n- 新增「自动更新」\n- 修复记忆功能\n- 修复经典界面频道列表右角标显示遮挡\n**建议所有用户更新**",
       "downloadUrlArm64": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v1.5.4/mytv-android-tv-1.5.4-arm64-v8a-sdk23-original.apk",
       "downloadUrlArmeabiV7a": "https://githubproxy.cc/https://github.com/hxfkof99/mytv-cf/releases/download/v1.5.4/mytv-android-tv-1.5.4-armeabi-v7a-sdk23-original.apk"
     },
